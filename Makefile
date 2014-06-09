@@ -16,7 +16,7 @@ clean:
 	rm -f *.o $(PRODUCT)
 
 indent:
-	indent *.c *.h library/*.c library/*.h
+	indent *.[ch] library/*.[ch] test/*.[ch] 
 
 test: $(OBJS) $(TEST_OBJS)
 	$(CC) -o testfile $^
