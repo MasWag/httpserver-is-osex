@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "whole_conf.h"
 
 int
 main (int argc, char *argv[])
 {
   int port;
-  char *doc_root;
 
   //! @todo sigpipeをmaskして無視する. 
 

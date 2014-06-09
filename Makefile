@@ -1,7 +1,7 @@
 PRODUCT = httpserver
 CFLAGS += -g -O0 -I. -Ilibrary -Itest
 MAIN_OBJS = main.o
-OBJS = library/request_parser.o
+OBJS = library/request_parser.o library/whole_conf.o library/header_gen.o
 TEST_OBJS = test/minunit.o
 
 all:$(PRODUCT)
