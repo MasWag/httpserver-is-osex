@@ -2,7 +2,8 @@
 
 typedef enum http_method_type
 {
-  GET
+  GET,
+  HEAD
 } http_method_type_t;
 
 typedef struct http_method_data
@@ -14,6 +15,11 @@ typedef struct http_method_get_data
 {
   char *path;
 } http_method_get_data_t;
+
+typedef struct http_method_head_data
+{
+  char *path;
+} http_method_head_data_t;
 
 typedef struct http_method
 {

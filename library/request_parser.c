@@ -17,5 +17,12 @@ parse_http_method (char *str)
       ret.data = malloc (sizeof (http_method_get_data_t));
       ((http_method_get_data_t *) ret.data)->path = strtok (NULL, " ");
     }
+  // HEAD
+  else if (!strcmp (type, "HEAD"))
+    {
+      ret.type = HEAD;
+      ret.data = malloc (sizeof (http_method_head_data_t));
+      ((http_method_head_data_t *) ret.data)->path = strtok (NULL, " ");
+    }
   return ret;
 }
