@@ -1,16 +1,25 @@
 PRODUCT = httpserver
-CFLAGS += -g -O3
-OBJS = main.o
+CFLAGS += -g -O0 -I. -Ilibrary -Itest
+MAIN_OBJS = main.o
+OBJS = library/request_parser.o
+TEST_OBJS = test/minunit.o
 
 all:$(PRODUCT)
 
-$(PRODUCT): $(OBJS)
+%.o:%.c
+	$(CC) -c $(CFLAGS) -o $@ $^
+
+$(PRODUCT): $(OBJS) $(MAIN_OBJS)
 	$(CC) -o $@ $^
 
 clean: 
 	rm -f *.o $(PRODUCT)
 
 indent:
-	indent *.c
+	indent *.c *.h library/*.c library/*.h
 
-.PHONY: all clean indent
+test: $(OBJS) $(TEST_OBJS)
+	$(CC) -o testfile $^
+	./testfile
+
+.PHONY: all clean indent test

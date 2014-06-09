@@ -13,4 +13,6 @@ typedef enum http_status
 } http_status_t;
 
 char* get_statue_line (enum http_status);
+#define get_server_inf_line() "Server: MasWag's Http Server/0.0.0\r\n"
+char* get_date_line (void);
 
