@@ -23,12 +23,13 @@ get_date_line (void)
 {
   char *str;
   time_t tm;
-  char *ti;
+  const char *ti;
 
+  tm = time (NULL);
   str = malloc (sizeof (char) * 33);
-  str = "Date: ";
+  strcpy (str, "Date: ");
   ti = ctime (&tm);
-  strncat (str, ti, 100);
+  strcat (str, ti);
   str[30] = '\r';
   str[31] = '\n';
   str[32] = '\0';

@@ -1,7 +1,7 @@
 PRODUCT = httpserver
-CFLAGS += -g -O0 -I. -Ilibrary -Itest
+CFLAGS += -g -O0 -I. -Ilibrary -Itest -pthread
 MAIN_OBJS = main.o
-OBJS = library/request_parser.o library/whole_conf.o library/header_gen.o
+OBJS = library/request_parser.o library/whole_conf.o library/header_gen.o library/socket.o library/node.o  library/file.o
 TEST_OBJS = test/minunit.o
 
 all:$(PRODUCT)
@@ -10,7 +10,7 @@ all:$(PRODUCT)
 	$(CC) -c $(CFLAGS) -o $@ $^
 
 $(PRODUCT): $(OBJS) $(MAIN_OBJS)
-	$(CC) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 clean: 
 	rm -f *.o $(PRODUCT)

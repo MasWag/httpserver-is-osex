@@ -1,6 +1,7 @@
 #include <pthread.h>
 
-void inits(void)
+void
+inits (void)
 {
 
 

@@ -2,6 +2,7 @@
 #include <string.h>
 #include "minunit.h"
 #include "request_parser.h"
+#include "header_gen.h"
 
 int tests_run = 0;
 
@@ -41,12 +42,40 @@ request_parser_head_test (void)
 
 }
 
+static char *
+get_date_line_test (void)
+{
+  char *str;
+  char in;
+  str = get_date_line ();
+
+  while (1)
+    {
+      printf ("is This ok? [Y/N]\n%s", str);
+
+      in = 'Y';			//getchar ();
+      switch (in)
+	{
+	case 'y':
+	case 'Y':
+	  return NULL;
+	case 'n':
+	case 'N':
+	  return "get_date_line_test not passed!!\n";
+	default:
+	  break;
+	}
+    }
+  return NULL;
+}
+
 
 static char *
 all_tests ()
 {
   mu_run_test (request_parser_get_test);
   mu_run_test (request_parser_head_test);
+  mu_run_test (get_date_line_test);
   return 0;
 }
 
