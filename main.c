@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include <signal.h>
 #include "library/whole_conf.h"
 #include "library/socket.h"
 #include "library/node.h"
@@ -15,8 +16,11 @@ main (int argc, char *argv[])
   int s;
   int fd;
   pthread_attr_t attr;
+  sigset_t sigset;
 
-  //! @todo sigpipeをmaskして無視する. 
+  sigemptyset( &sigset );
+  sigaddset( &sigset, SIGPIPE );
+  sigprocmask( SIG_BLOCK,&sigset, NULL );
 
   if (argc < 3)
     {
@@ -26,7 +30,7 @@ main (int argc, char *argv[])
   port = atoi (argv[1]);
   doc_root = argv[2];
 
-  //! @todo call httpd's main func
+  //! call httpd's main func
   socket_init (&s, port);
   pthread_attr_init (&attr);
 
