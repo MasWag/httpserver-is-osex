@@ -16,10 +16,9 @@
 #define BUFF_SIZE 128
 
 void
-node (int *p_fd)
+node (int fd)
 {
   http_method_t method;
-  int fd = *p_fd;
   int rfd;
   char *str;
   int str_size = BUFF_SIZE;
@@ -36,7 +35,8 @@ node (int *p_fd)
 	  strcat (str, buff);
 	  if (size == -1)
 	    {
-	      perror ("read");
+	      perror ("read1");
+              printf ("%d\n",fd);
 	      free (str);
 	      pthread_exit (EXIT_SUCCESS);
 	    }
@@ -55,6 +55,7 @@ node (int *p_fd)
 	      str = realloc (str, str_size);
 	    }
 	}
+      printf ("%s\n",str);
       method = parse_http_method (str);
 
       // いずれもheaderを送るまでは共通
@@ -63,7 +64,6 @@ node (int *p_fd)
 	  char *fpath =
 	    get_file_path (((http_method_get_data_t *) method.data)->path);
 	  rfd = open (fpath, O_RDONLY);
-          free (fpath);
 	  if (rfd == -1)
 	    {
 	      switch (errno)
@@ -71,7 +71,8 @@ node (int *p_fd)
 		case ENOENT:
 		case EACCES:
 		  {
-		    perror ("open");
+		    perror ("open1");
+                    printf ("%s\n",fpath);
 		    const char *status_line = get_statue_line (NOT_FOUND);
 		    send_msg (fd, status_line);
 		    char *date_line = get_date_line ();
@@ -83,6 +84,7 @@ node (int *p_fd)
                     int ifd = open ("htmls/404.html",O_RDONLY);
                     read_and_write (ifd,fd);
                     close (ifd);
+                    free (fpath);
 		    continue;
 		  }
 		default:
@@ -97,11 +99,12 @@ node (int *p_fd)
 		    const char *server_inf_line = get_server_inf_line ();
 		    send_msg (fd, server_inf_line);
 		    send_msg (fd, "\r\n");
-
+                    free (fpath);
 		    continue;
 		  }
 		}
 	    }
+          free (fpath);
 	  const char *status_line = get_statue_line (OK);
 	  send_msg (fd, status_line);
 	  char *date_line = get_date_line ();
@@ -114,7 +117,7 @@ node (int *p_fd)
       // GETとHEAD以外は今のところない
       else
 	{
-	  printf ("HERE\n");
+	  fprintf (stderr,"Not implemented%s\n",str);
 	  const char *status_line = get_statue_line (NOT_IMPLEMENTED);
 	  send_msg (fd, status_line);
 	  char *date_line = get_date_line ();
@@ -132,6 +135,7 @@ node (int *p_fd)
 	}
       close (rfd);
       close (fd);
+      free (str);
       pthread_exit (EXIT_SUCCESS);
     }
 }

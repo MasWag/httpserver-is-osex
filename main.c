@@ -32,7 +32,6 @@ main (int argc, char *argv[])
 
   //! call httpd's main func
   socket_init (&s, port);
-  pthread_attr_init (&attr);
 
   while (1)
     {
@@ -44,7 +43,7 @@ main (int argc, char *argv[])
 	  continue;
 	}
 
-      pthread_create (&pth, &attr, (pthfunc) node, &fd);
+      pthread_create (&pth, NULL,(void*) node, (void*) fd);
       pthread_detach (pth);
     }
 

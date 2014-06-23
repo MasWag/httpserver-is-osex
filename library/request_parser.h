@@ -14,11 +14,13 @@ typedef struct http_method_data
 typedef struct http_method_get_data
 {
   char *path;
+  char *var;
 } http_method_get_data_t;
 
 typedef struct http_method_head_data
 {
   char *path;
+  char *var;
 } http_method_head_data_t;
 
 typedef struct http_method
